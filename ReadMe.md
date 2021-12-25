@@ -4,3 +4,7 @@
 
 # 所需环境
 caffe
+
+# 测试结果
+
+![image](https://github.com/cqu20160901/yolov5_p6_caffe/blob/master/result.jpg)
