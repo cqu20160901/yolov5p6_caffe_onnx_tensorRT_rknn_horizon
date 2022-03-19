@@ -7,9 +7,8 @@ caffe_yolov5p6：去除维度变换层的prototxt、caffeModel、测试图像、
 
 onnx_yolov5p6：onnx模型、测试图像、测试结果、测试demo脚本
 
-tensorRT_yolov5p6：TensorRT版本模型、测试图像、测试结果、测试demo脚本、onnx模型、onnx2tensorRT脚本(tensorRT7)
+tensorRT_yolov5p6：TensorRT版本模型、测试图像、测试结果、测试demo脚本、onnx模型、onnx2tensorRT脚本(tensorRT-7.2.3.4)
 
-tensorRT-7.2.3.4
 
 # 测试结果
 
