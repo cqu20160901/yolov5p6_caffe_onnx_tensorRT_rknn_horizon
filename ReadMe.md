@@ -1,12 +1,12 @@
 # yolov5_nano的caffe和onnx版本
 
-将pytorch版本的yolov5_nano转成caffe和onnx，用python语言对后处理进行了C++形式的重写，便于移植不同平台。
+将pytorch版本的yolov5_nano转成caffe、onnx、tensorRT，用python语言对后处理进行了C++形式的重写，便于移植不同平台。
 
-# 所需环境
+caffe_yolov5p6：去除维度变换层的prototxt、caffeModel、测试图像、测试结果、测试demo脚本
 
-1、用caffe版本demo需要caffe环境
+onnx_yolov5p6：onnx模型、测试图像、测试结果、测试demo脚本
 
-2、用onnx版本demo需要python环境
+tensorRT_yolov5p6：TensorRT版本模型、测试图像、测试结果、测试demo脚本、onnx模型、onnx2tensorRT脚本(tensorRT7)
 
 # 测试结果
 
