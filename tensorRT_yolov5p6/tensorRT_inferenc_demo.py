@@ -33,8 +33,6 @@ obj_thre = [0.4, 0.4]
 input_imgW = 512
 input_imgH = 512
 
-priorbox_mean = []
-
 
 # Simple helper data class that's a little nicer to use than a 2-tuple.
 class HostDeviceMem(object):
