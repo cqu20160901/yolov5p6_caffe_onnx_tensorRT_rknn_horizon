@@ -1,4 +1,4 @@
-# yolov5_nano的caffe和onnx版本
+# yolov5_nano的caffe、onnx和tensorRT部署版本
 
 将pytorch版本的yolov5_nano转成caffe、onnx、tensorRT，用python语言对后处理进行了C++形式的重写，便于移植不同平台。
 
