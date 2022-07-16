@@ -211,8 +211,8 @@ def preprocess(src):
     img = cv2.resize(src, (input_imgW, input_imgH)).astype(np.float32)
     img = img * 0.00392156
     img = img.transpose(2, 0, 1)
-    img_input = img.copy()
-    return img_input
+    img = np.ascontiguousarray(img)
+    return img
 
 
 
