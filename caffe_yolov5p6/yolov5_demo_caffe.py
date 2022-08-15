@@ -53,11 +53,11 @@ class DetectBox:
 
 
 def grid_cell_init():
-    for h in range(output_head):
-        for i in range(cell_size[h][1]):
-            for j in range(cell_size[h][0]):
-                grid_cell[h][j][i][0] = i;
-                grid_cell[h][j][i][1] = j;
+    for index in range(output_head):
+        for w in range(cell_size[index][1]):
+            for h in range(cell_size[index][0]):
+                grid_cell[index][h][w][0] = w;
+                grid_cell[index][h][w][1] = h;
 
 
 def IOU(xmin1, ymin1, xmax1, ymax1, xmin2, ymin2, xmax2, ymax2):
@@ -108,53 +108,55 @@ def NMS(detectResult):
     return predBoxs
 
 
+
 def postprocess(out, img_h, img_w):
     print('postprocess ... ')
 
     detectResult = []
 
     output = []
-    output.append(out['sigmoid1'].reshape((-1)))
-    output.append(out['sigmoid2'].reshape((-1)))
-    output.append(out['sigmoid3'].reshape((-1)))
+    for i in range(len(out)):
+        output.append(out[i].reshape((-1)))
 
     gs = 4 + 1 + class_num
     scale_h = img_h / input_imgH
     scale_w = img_w / input_imgW
 
-    for i in range(output_head):
-        y = output[i]
-        for ss in range(cell_size[i][0]):
+    for head in range(output_head):
+        y = output[head]
+        for h in range(cell_size[head][0]):
 
-            for ff in range(cell_size[i][1]):
-                for jj in range(anchor_num):
-                    conf_scale = y[((jj * gs + 4) * cell_size[i][0] * cell_size[i][1]) + ss * cell_size[i][1] + ff]
+            for w in range(cell_size[head][1]):
+                for a in range(anchor_num):
+                    conf_scale = y[((a * gs + 4) * cell_size[head][0] * cell_size[head][1]) + h * cell_size[head][1] + w]
                     for cl in range(class_num):
-                        conf = y[((jj * gs + 5 + cl) * cell_size[i][0] * cell_size[i][1]) + ss * cell_size[i][1] + ff] * conf_scale
+                        conf = y[((a * gs + 5 + cl) * cell_size[head][0] * cell_size[head][1]) + h * cell_size[head][1] + w] * conf_scale
 
                         if conf > obj_thre[cl]:
-                            bx = (y[((jj * gs + 0) * cell_size[i][0] * cell_size[i][1]) + ss * cell_size[i][1] + ff] * 2.0 - 0.5 + grid_cell[i][ss][ff][0]) * stride[i]
-                            by = (y[((jj * gs + 1) * cell_size[i][0] * cell_size[i][1]) + ss * cell_size[i][1] + ff] * 2.0 - 0.5 + grid_cell[i][ss][ff][1]) * stride[i]
-                            bw = pow((y[((jj * gs + 2) * cell_size[i][0] * cell_size[i][1]) + ss * cell_size[i][1] + ff] * 2), 2) * anchor_size[i][jj][0]
-                            bh = pow((y[((jj * gs + 3) * cell_size[i][0] * cell_size[i][1]) + ss * cell_size[i][1] + ff] * 2), 2) * anchor_size[i][jj][1]
+                            bx = (y[((a * gs + 0) * cell_size[head][0] * cell_size[head][1]) + h * cell_size[head][1] + w] * 2.0 - 0.5 + grid_cell[head][h][w][0]) * stride[head]
+                            by = (y[((a * gs + 1) * cell_size[head][0] * cell_size[head][1]) + h * cell_size[head][1] + w] * 2.0 - 0.5 + grid_cell[head][h][w][1]) * stride[head]
+                            bw = pow((y[((a * gs + 2) * cell_size[head][0] * cell_size[head][1]) + h * cell_size[head][1] + w] * 2), 2) * anchor_size[head][a][0]
+                            bh = pow((y[((a * gs + 3) * cell_size[head][0] * cell_size[head][1]) + h * cell_size[head][1] + w] * 2), 2) * anchor_size[head][a][1]
 
                             xmin = (bx - bw / 2) * scale_w
                             ymin = (by - bh / 2) * scale_h
                             xmax = (bx + bw / 2) * scale_w
                             ymax = (by + bh / 2) * scale_h
-
+                            
                             xmin = xmin if xmin > 0 else 0
                             ymin = ymin if ymin > 0 else 0
                             xmax = xmax if xmax < img_w else img_w
                             ymax = ymax if ymax < img_h else img_h
-
-                            box = DetectBox(cl, conf, xmin, ymin, xmax, ymax)
-                            detectResult.append(box)
+							
+                            if xmin >= 0 and ymin >= 0 and xmax <= img_w and ymax <= img_h:
+                                box = DetectBox(cl, conf, xmin, ymin, xmax, ymax)
+                                detectResult.append(box)
 
     # NMS 过程
     print('detectResult:', len(detectResult))
     predBox = NMS(detectResult)
     return predBox
+
 
 
 def preprocess(src):
