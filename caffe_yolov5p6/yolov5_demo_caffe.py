@@ -9,7 +9,7 @@ sys.path.insert(0, caffe_root + 'python')
 import caffe
 
 net_file = './yolov5n_p6.prototxt'
-caffe_model = './yolov5n_p6_new.caffemodel'
+caffe_model = './yolov5n_p6.caffemodel'
 
 if not os.path.exists(caffe_model):
     print(caffe_model + " does not exist")
@@ -115,8 +115,10 @@ def postprocess(out, img_h, img_w):
     detectResult = []
 
     output = []
-    for i in range(len(out)):
-        output.append(out[i].reshape((-1)))
+
+    output.append(out['sigmoid1'].reshape((-1)))
+    output.append(out['sigmoid2'].reshape((-1)))
+    output.append(out['sigmoid3'].reshape((-1)))
 
     gs = 4 + 1 + class_num
     scale_h = img_h / input_imgH
