@@ -178,26 +178,26 @@ def postprocess(out, img_h, img_w):
 
             for w in range(cell_size[head][1]):
                 for a in range(anchor_num):
-                    conf_scale = y[((a * gs + 4) * cell_size[head][0] * cell_size[head][1]) + h * cell_size[head][1] + w]
+                    conf_scale = sigmoid(y[((a * gs + 4) * cell_size[head][0] * cell_size[head][1]) + h * cell_size[head][1] + w])
                     for cl in range(class_num):
-                        conf = y[((a * gs + 5 + cl) * cell_size[head][0] * cell_size[head][1]) + h * cell_size[head][1] + w] * conf_scale
+                        conf = sigmoid(y[((a * gs + 5 + cl) * cell_size[head][0] * cell_size[head][1]) + h * cell_size[head][1] + w]) * conf_scale
 
                         if conf > obj_thre[cl]:
-                            bx = (y[((a * gs + 0) * cell_size[head][0] * cell_size[head][1]) + h * cell_size[head][1] + w] * 2.0 - 0.5 + grid_cell[head][h][w][0]) * stride[head]
-                            by = (y[((a * gs + 1) * cell_size[head][0] * cell_size[head][1]) + h * cell_size[head][1] + w] * 2.0 - 0.5 + grid_cell[head][h][w][1]) * stride[head]
-                            bw = pow((y[((a * gs + 2) * cell_size[head][0] * cell_size[head][1]) + h * cell_size[head][1] + w] * 2), 2) * anchor_size[head][a][0]
-                            bh = pow((y[((a * gs + 3) * cell_size[head][0] * cell_size[head][1]) + h * cell_size[head][1] + w] * 2), 2) * anchor_size[head][a][1]
+                            bx = (sigmoid(y[((a * gs + 0) * cell_size[head][0] * cell_size[head][1]) + h * cell_size[head][1] + w]) * 2.0 - 0.5 + grid_cell[head][h][w][0]) * stride[head]
+                            by = (sigmoid(y[((a * gs + 1) * cell_size[head][0] * cell_size[head][1]) + h * cell_size[head][1] + w]) * 2.0 - 0.5 + grid_cell[head][h][w][1]) * stride[head]
+                            bw = pow((sigmoid(y[((a * gs + 2) * cell_size[head][0] * cell_size[head][1]) + h * cell_size[head][1] + w]) * 2), 2) * anchor_size[head][a][0]
+                            bh = pow((sigmoid(y[((a * gs + 3) * cell_size[head][0] * cell_size[head][1]) + h * cell_size[head][1] + w]) * 2), 2) * anchor_size[head][a][1]
 
                             xmin = (bx - bw / 2) * scale_w
                             ymin = (by - bh / 2) * scale_h
                             xmax = (bx + bw / 2) * scale_w
                             ymax = (by + bh / 2) * scale_h
-                            
+
                             xmin = xmin if xmin > 0 else 0
                             ymin = ymin if ymin > 0 else 0
                             xmax = xmax if xmax < img_w else img_w
                             ymax = ymax if ymax < img_h else img_h
-							
+
                             if xmin >= 0 and ymin >= 0 and xmax <= img_w and ymax <= img_h:
                                 box = DetectBox(cl, conf, xmin, ymin, xmax, ymax)
                                 detectResult.append(box)
