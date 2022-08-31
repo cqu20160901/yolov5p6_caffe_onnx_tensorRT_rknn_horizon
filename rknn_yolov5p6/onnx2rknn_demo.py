@@ -16,7 +16,7 @@ DATASET = './dataset.txt'
 QUANTIZE_ON = True
 
 
-CLASSES = ('car', 'ped')
+CLASSES = ['car', 'ped']
 class_num = len(CLASSES)
 anchor_num = 3
 output_head = 6
@@ -54,8 +54,8 @@ def grid_cell_init():
     for index in range(output_head):
         for w in range(cell_size[index][1]):
             for h in range(cell_size[index][0]):
-                grid_cell[index][h][w][0] = w;
-                grid_cell[index][h][w][1] = h;
+                grid_cell[index][h][w][0] = w
+                grid_cell[index][h][w][1] = h
 
 
 def IOU(xmin1, ymin1, xmax1, ymax1, xmin2, ymin2, xmax2, ymax2):
@@ -217,6 +217,7 @@ if __name__ == '__main__':
     # Set inputs
     img_path = 'test.jpg'
     origimg = cv2.imread(img_path)
+    origimg = cv2.cvtColor(origimg, cv2.COLOR_BGR2RGB)
     img_h, img_w = origimg.shape[:2]
     img = cv2.resize(origimg, (input_imgW, input_imgH))
 
