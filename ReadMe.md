@@ -11,6 +11,8 @@ tensorRT_yolov5p6：TensorRT版本模型、测试图像、测试结果、测试d
 
 rknn_yolov5p6：rknn模型、测试（量化）图像、测试结果、onnx2rknn转换测试脚本
 
+horizon_yolov5p6：地平线模型、测试（量化）图像、测试结果、转换地平线模型脚本、测试地平线模型脚本
+
 # 测试结果
 
 ![image](https://github.com/cqu20160901/yolov5p6_caffe_onnx/blob/master/caffe_yolov5p6/result.jpg)
