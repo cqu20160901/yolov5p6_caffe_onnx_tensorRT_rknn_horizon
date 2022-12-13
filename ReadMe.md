@@ -1,6 +1,6 @@
-# yolov5_nano的caffe、onnx、tensorRT、rknn部署版本
+# yolov5_nano的caffe、onnx、tensorRT、rknn、Horizon部署版本
 
-将pytorch版本的yolov5_nano转成caffe、onnx、tensorRT，用python语言对后处理进行了C++形式的重写，便于移植不同平台。
+将pytorch版本的yolov5_nano转成caffe、onnx、tensorRT、rknn、Horizon，用python语言对后处理进行了C++形式的重写，便于移植不同平台。
 
 # 文件结构说明
 caffe_yolov5p6：去除维度变换层的prototxt、caffeModel、测试图像、测试结果、测试demo脚本
